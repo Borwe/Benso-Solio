@@ -35,7 +35,7 @@ public class AdminLogin extends HttpServlet {
 			return;
 		}
 		if(user_name.equals(password) && user_name.equals("admin")) {
-			request.getRequestDispatcher("/admin/page.jsp").forward(request, response);
+			response.sendRedirect("page.jsp");
 		}else {
 			response.getWriter().append("FUCKING SHIT");
 		}
