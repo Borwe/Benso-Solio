@@ -1,4 +1,4 @@
-package customer_access;
+package admin_access;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -7,19 +7,24 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import models.Customer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import models.Employee;
 
 /**
- * Servlet implementation class CustomerLogin
+ * Servlet implementation class AddEmployee
  */
-@WebServlet("/guest/customer_login")
-public class CustomerLogin extends HttpServlet {
+@WebServlet("/admin/add_employee")
+public class AddEmployee extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+    
+	private Logger logger=LoggerFactory.getLogger(AddEmployee.class);
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CustomerLogin() {
+    public AddEmployee() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -29,15 +34,20 @@ public class CustomerLogin extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String user_name=request.getParameter("user_name");
-		String password=request.getParameter("password");
+		String first_name=request.getParameter("first_name");
+		String last_name=request.getParameter("last_name");
+		String national_id=request.getParameter("national_id");
+		int produce_id=Integer.parseInt(request.getParameter("produce_id"));
 		
-		Customer customer=Customer.getFromDB(user_name, password);
-		if(customer!=null) {
-			response.sendRedirect("page.jsp");
+		Employee employee=Employee.makeEmployee(first_name, last_name,
+				national_id, produce_id);
+		
+		if(employee.checkIfEmployeeExist(employee.getNational_id())==false) {
+			employee.addEmployeeToDB();
 		}else {
-			response.getWriter().append("Served at: ").append(request.getContextPath());
+			response.getWriter().append("FUCKING EMPLOYEE EXISTS");
 		}
+		
 	}
 
 	/**
