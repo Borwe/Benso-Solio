@@ -1,3 +1,4 @@
+<%@page import="java.util.Set"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.Enumeration"%>
 <%@page import="models.Produce"%>
@@ -12,16 +13,51 @@
 </head>
 <body>
 
+<table>
+	<tr>
+		<th>Produce Chosen:</th>
+		<th>Quantity (units)</th>
+		<th>Price(Ksh)</th>	
+	</tr>
 <%
-	List<Produce> produceList=Produce.getProduceList();
-	Enumeration<String> params=request.getParameterNames();
 	
-	HashMap<String,String> values=new HashMap<>();
+	HashMap<String,String> values=(HashMap<String,String>)request.getSession().getAttribute("values");
 	
-	while(params.hasMoreElements()){
-		values.put(params.nextElement(), request.getParameter(params.nextElement()));
+	Set<String> keys=values.keySet();
+	
+	double total_price_ofItems=0;
+	
+	for(String k:keys){
+		Produce p=Produce.getProduceWithName(k);
+		double price=p.getPrice()*Double.parseDouble(values.get(k));
+		total_price_ofItems=total_price_ofItems+price;
+		%>
+			<tr>
+				<td><%=p.getProduce_name() %></td>
+				<td><%=values.get(k) %></td>
+				<td><%=String.valueOf(price) %></td>
+			</tr>
+		<%
 	}
 %>
+	<tr>
+		<th colspan="2">Total Price:</th>
+		<td><%=total_price_ofItems %></td>
+	</tr>
+	<form method="post" action="customer_paid">
+	<tr>
+		<th colspan="2">Pay with MPESA to no. 0711881816<br>
+			And enter the Mpesa code here. 
+		</th>
+		<td>
+			<input type="text" name="mpesa_code">
+		</td>
+	</tr>
+	<tr>
+		<td colspan="3"><input type="submit" value="Paid With MPESA"></td>
+	</tr>
+	</form>
+</table>
 	
 </body>
 </html>

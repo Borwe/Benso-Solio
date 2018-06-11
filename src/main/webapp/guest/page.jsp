@@ -20,7 +20,7 @@
 
 <table>
 	
-	<form method="post" action="prompt_buy.jsp">
+	<form method="post" action="confirm_list">
 	<input type="submit" value="BUY SELECTED">
 	<tr>
 		<th>Produce Name</th>
@@ -39,7 +39,9 @@
 				<td><%=prod.getCategoryName() %></td>
 				<td><%=prod.getQuantity() %></td>
 				<td><%=prod.getPrice() %></td>
-				<td><input type="number" value=0 min="0" name="<%=prod.getProduce_name()%>"></td>
+				<td><input type="number" value=0 min="0" 
+					max="<%=prod.getQuantity() %>"
+					name="<%=prod.getProduce_name()%>"></td>
 				</tr>
 			<%
 		}

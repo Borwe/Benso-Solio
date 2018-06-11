@@ -101,6 +101,19 @@ public class Produce {
 		return category;
 	}
 	
+	public static Produce getProduceWithName(String produce_name) {
+		List<Produce> list=getProduceList();
+		
+		Produce toReturn=null;
+		for(Produce p: list) {
+			if(p.getProduce_name().equals(produce_name.trim())) {
+				toReturn=p;
+			}
+		}
+		
+		return toReturn;
+	}
+	
 	public List<Employee> getEmployeesResponsible(){
 		List<Employee> employees=new ArrayList<>();
 		
