@@ -1,3 +1,8 @@
+<%@page import="java.util.Collections"%>
+<%@page import="java.util.Collection"%>
+<%@page import="models.Sale"%>
+<%@page import="models.Customer"%>
+<%@page import="java.util.HashMap"%>
 <%@page import="models.Produce"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -10,9 +15,21 @@
 </head>
 <body>
 
+<%
+if(request.getSession(false).getAttribute("user")==null){
+	request.getRequestDispatcher("index.jsp").forward(request, response);
+}
+%>
+
 <table>
 	<tr>
 		<th>Produce Available</th>
+		<th>Buying History</th>
+		<th>
+		<form method="post" action="customer_logout">
+		<input type="submit" value="LOG OUT">
+		</form>
+		</th>
 	</tr>
 </table>
 
@@ -48,6 +65,37 @@
 	%>
 	
 	</form>
+</table>
+
+<table>
+	<tr>
+		<th>Produce Name</th>
+		<th>Quantity Purchased</th>
+		<th>Price(Ksh.)</th>
+		<th>MPesa Code</th>
+		<th>Date</th>
+	</tr>
+	
+	<%
+		HashMap<String,String> user=
+			(HashMap<String,String>)
+			request.getSession().getAttribute("user");
+		Customer customer=Customer.getFromDB(user.get("user_name"),
+				user.get("password"));
+		List<Sale> sales=customer.getPreviousProduceList();
+		Collections.reverse(sales);
+		for(Sale sale:sales){
+			%>
+				<tr>
+					<td><%=sale.getProduceName() %></td>
+					<td><%=sale.getQuantity() %></td>
+					<td><%=sale.getAmount() %></td>
+					<td><%=sale.getMpesa_Code() %></td>
+					<td><%=sale.getDate() %></td>
+				</tr>
+			<%
+		}
+	%>
 </table>
 
 </body>

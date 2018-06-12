@@ -1,27 +1,23 @@
 package customer_access;
 
 import java.io.IOException;
-import java.util.HashMap;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import models.Customer;
-
 /**
- * Servlet implementation class CustomerLogin
+ * Servlet implementation class CustomerLogout
  */
-@WebServlet("/guest/customer_login")
-public class CustomerLogin extends HttpServlet {
+@WebServlet("/guest/customer_logout")
+public class CustomerLogout extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CustomerLogin() {
+    public CustomerLogout() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,20 +27,8 @@ public class CustomerLogin extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String user_name=request.getParameter("user_name");
-		String password=request.getParameter("password");
-		
-		Customer customer=Customer.getFromDB(user_name, password);
-		if(customer!=null) {
-			HashMap<String, String> user=new HashMap<>();
-			user.put("user_name", user_name);
-			user.put("password", password);
-			
-			request.getSession().setAttribute("user", user);
-			response.sendRedirect("page.jsp");
-		}else {
-			response.getWriter().append("Served at: ").append(request.getContextPath());
-		}
+		request.getSession().setAttribute("user", null);
+		response.sendRedirect("index.jsp");
 	}
 
 	/**

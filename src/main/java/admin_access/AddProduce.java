@@ -49,6 +49,8 @@ public class AddProduce extends HttpServlet {
 				product_name,category_id,quantity,price, date);
 		
 		produce.addToDB();
+		
+		response.sendRedirect("page.jsp");
 	}
 
 	/**

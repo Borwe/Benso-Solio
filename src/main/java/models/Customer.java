@@ -1,5 +1,9 @@
 package models;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
 import databases.DBAccess;
 
 /**
@@ -136,6 +140,29 @@ public class Customer {
 				});
 	}
 	
+	public void payGoodFor(Produce produce,int produce_quantity,
+			String mpesa_code) {
+		//get date
+		Calendar today=Calendar.getInstance();
+		String date="";
+		
+		date=today.get(Calendar.DAY_OF_MONTH)+"/"
+				+(today.get(Calendar.MONTH)+1)
+				+"/"+today.get(Calendar.YEAR);
+		
+		double price=produce_quantity*produce.getPrice();
+		
+		DBAccess.getQuery().update("insert into sales_inventory"
+				+ " (produce_id,customer_id,quantity,"
+				+ "amount,mpesa_code,date) values (?,?,?,?,?,?)", new Object[] {
+						produce.getProduce_id(),customer_id,
+						produce_quantity,price,mpesa_code,date
+				});
+		
+		//deeduct Prouce quantity
+		produce.deductProduceQuantity(produce_quantity);
+	}
+	
 	public static Customer getFromDB(String user_name,String password) {
 		final Builder builder=new Builder();
 		DBAccess.getQuery().query("select * from customers", row->{
@@ -151,6 +178,30 @@ public class Customer {
 		});
 		
 		return builder.buildFromDB();
+	}
+	
+	public List<Sale> getPreviousProduceList(){
+		List<Sale> sales=new ArrayList<>();
+		
+		DBAccess.getQuery().query("select * from sales_inventory where"
+				+ " customer_id="+customer_id, row->{
+					sales.add(new Sale(row.getInt("inventory_id"),
+							row.getInt("produce_id"),
+							row.getInt("customer_id"),
+							row.getInt("quantity"),
+							row.getInt("amount"),
+							row.getString("mpesa_Code"),
+							row.getString("date")));
+				});
+		
+		return sales;
+	}
+	
+	public static String getCustomerNameByID(int id) {
+		return DBAccess.getQuery().query("select * from customers"
+				+ " where customer_id="+id, row->{
+					return row.getString("first_name")+" "+row.getString("last_name");
+				});
 	}
 
 	@Override

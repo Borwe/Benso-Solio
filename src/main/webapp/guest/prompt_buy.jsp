@@ -54,9 +54,12 @@
 		</td>
 	</tr>
 	<tr>
-		<td colspan="3"><input type="submit" value="Paid With MPESA"></td>
+		<td colspan="2"><input type="submit" value="Paid With MPESA"></td>
+		</form>
+		<form method="post" action="cancel_list">
+		<td><input type="submit" value="CANCEL"></td>
+		</form>
 	</tr>
-	</form>
 </table>
 	
 </body>

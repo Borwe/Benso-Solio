@@ -8,6 +8,12 @@
 </head>
 <body>
 
+	<%
+		if(request.getSession().getAttribute("user")!=null){
+			request.getRequestDispatcher("page.jsp").forward(request, response);
+		}
+	%>
+
 	<table>
 		<form method="post" action="customer_login">
 		<tr><th colspan="2">LOGIN</th></tr>

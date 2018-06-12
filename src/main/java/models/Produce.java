@@ -114,6 +114,15 @@ public class Produce {
 		return toReturn;
 	}
 	
+	public void deductProduceQuantity(int quantity) {
+		this.quantity=this.quantity-quantity;
+		
+		DBAccess.getQuery().update("update produce "
+				+ "set quantity=? where produce_id=?", new Object[] {
+			this.quantity,this.produce_id
+		});
+	}
+	
 	public List<Employee> getEmployeesResponsible(){
 		List<Employee> employees=new ArrayList<>();
 		

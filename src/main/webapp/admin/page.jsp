@@ -1,3 +1,6 @@
+<%@page import="models.Customer"%>
+<%@page import="java.util.Collections"%>
+<%@page import="models.Sale"%>
 <%@page import="models.Employee"%>
 <%@page import="models.Produce"%>
 <%@page import="models.Admin"%>
@@ -9,21 +12,73 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<link rel="stylesheet" href="../css/bootstrap.min.css">
+<script src="../js/jquery-3.3.1.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+
 <title>ADMINISTRATOR PAGE</title>
 </head>
 <body>
-
-<table>
+<script>
+	$(document).ready(function() {
+		$("#add_produce").hide();
+		$("#add_employee").hide();
+		$("#show_sales").hide();
+		$("#show_products").show();
+		
+		$("#add_produce_btn").click(function() {
+			$("#add_produce").show();
+			$("#add_employee").hide();
+			$("#show_sales").hide();
+			$("#show_products").hide();
+		});
+		
+		$("#add_employee_btn").click(function() {
+			$("#add_produce").hide();
+			$("#add_employee").show();
+			$("#show_sales").hide();
+			$("#show_products").hide();
+		});
+		
+		$("#show_products_btn").click(function() {
+			$("#add_produce").hide();
+			$("#add_employee").hide();
+			$("#show_sales").hide();
+			$("#show_products").show();
+		});
+		
+		$("#show_sales_btn").click(function() {
+			$("#add_produce").hide();
+			$("#add_employee").hide();
+			$("#show_sales").show();
+			$("#show_products").hide();
+		});
+	});
+</script>
+<table width="100%">
     <tr>
-        <th>ADD PRODUCE</th>
-        <th>ADD EMPLOYEE</th>
-        <th>Product to Employee</th>
+        <th><a href="#" id="add_produce_btn">ADD PRODUCE</a></th>
+        <th><a href="#" id="add_employee_btn">ADD EMPLOYEE</a></th>
+        <th><a href="#" id="show_products_btn">PRODUCT TO EMPLOYEES</a></th>
+        <th><a href="#" id="show_sales_btn">SALES</a></th>
     </tr>
 </table>
 
-<br><br>
+<br>
+<h3><font color="red">
+<% 
+String admin_error=(String)request.getSession().getAttribute("admin_error");
+if(admin_error!=null){
+	out.println(admin_error);
+	request.getSession().setAttribute("admin_error", null);
+}
+%>
+</font>
+</h3>
 
-<table>
+
+<table id="add_produce">
 	<form method="post" action="add_produce">
     <tr>
         <th>SELECT CATEGORY</th>
@@ -57,9 +112,7 @@
     </form>
 </table>
 
-<br><br>
-
-<table>
+<table id="add_employee">
 	<form method="post" action="add_employee">
 	<tr>
 		<th>First Name:</th>
@@ -103,9 +156,7 @@
 	</form>
 </table>
 
-<br><br>
-
-<table>
+<table id="show_products">
 	<tr>
 		<th>Produce ID</th>
 		<th>Produce Name</th>
@@ -129,6 +180,42 @@
 				<td><%=prod.getQuantity() %></td>
 				<td><%=prod.getPrice() %></td>
 				<td><%=employeeNames %></td>
+				</tr>
+			<%
+		}
+	%>
+</table>
+
+<table id="show_sales">
+	<tr>
+		<th>ID</th>
+		<th>Produce Name</th>
+		<th>Customer Name</th>
+		<th>Quantity(Units)</th>
+		<th>Price(Ksh.)</th>
+		<th>MPESA code</th>
+		<th>Date</th>
+	</tr>
+	
+	<%
+		List<Sale> salesList=Sale.getSalesList();
+		Collections.reverse(salesList);
+		
+		for(Sale sale:salesList){
+			%>
+				<tr>
+				<td><%=sale.getInventory_id() %></td>
+				<td><% for(Produce produce:Produce.getProduceList()){
+					if(produce.getProduce_id()==sale.getProduce_id()){
+						out.println(produce.getProduce_name());
+					}
+				}
+				%></td>
+				<td><%=Customer.getCustomerNameByID(sale.getCustomer_id()) %></td>
+				<td><%=sale.getQuantity() %></td>
+				<td><%=sale.getAmount() %></td>
+				<td><%=sale.getMpesa_Code() %></td>
+				<td><%=sale.getDate() %></td>
 				</tr>
 			<%
 		}

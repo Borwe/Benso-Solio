@@ -1,27 +1,28 @@
 package customer_access;
 
 import java.io.IOException;
-import java.util.HashMap;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import models.Customer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * Servlet implementation class CustomerLogin
+ * Servlet implementation class CancelList
  */
-@WebServlet("/guest/customer_login")
-public class CustomerLogin extends HttpServlet {
+@WebServlet("/guest/cancel_list")
+public class CancelList extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
+	private Logger logger=LoggerFactory.getLogger(CancelList.class);
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CustomerLogin() {
+    public CancelList() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,20 +32,8 @@ public class CustomerLogin extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String user_name=request.getParameter("user_name");
-		String password=request.getParameter("password");
-		
-		Customer customer=Customer.getFromDB(user_name, password);
-		if(customer!=null) {
-			HashMap<String, String> user=new HashMap<>();
-			user.put("user_name", user_name);
-			user.put("password", password);
-			
-			request.getSession().setAttribute("user", user);
-			response.sendRedirect("page.jsp");
-		}else {
-			response.getWriter().append("Served at: ").append(request.getContextPath());
-		}
+		request.getSession().setAttribute("values", null);
+		request.getRequestDispatcher("page.jsp").forward(request, response);
 	}
 
 	/**
