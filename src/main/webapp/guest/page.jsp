@@ -11,31 +11,63 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<link rel="stylesheet" href="../css/bootstrap.min.css">
+<script src="../js/jquery-3.3.1.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+
 <title>Guest Section</title>
 </head>
 <body>
 
+<script>
+	$(document).ready(function() {
+		$("#produce_table").show();
+		$("#sales_table").hide();
+		
+		$("#produce_btn").click(function() {
+			$("#produce_table").show();
+			$("#sales_table").hide();
+		});
+		
+		$("#buy_history_btn").click(function() {
+			$("#produce_table").hide();
+			$("#sales_table").show();
+		})
+	})
+</script>
+<center>
 <%
 if(request.getSession(false).getAttribute("user")==null){
 	request.getRequestDispatcher("index.jsp").forward(request, response);
 }
 %>
 
-<table>
+<table width="80%">
 	<tr>
-		<th>Produce Available</th>
-		<th>Buying History</th>
+		<th><a href="#" id="produce_btn">Produce Available</a></th>
+		<th><a href="#" id="buy_history_btn">Buying History</a></th>
 		<th>
-		<form method="post" action="customer_logout">
-		<input type="submit" value="LOG OUT">
-		</form>
+		<a href="customer_logout">LOG OUT</a>
 		</th>
 	</tr>
 </table>
 
 <br><br>
 
-<table>
+<h3><font color="red">
+	<%
+		String user_error=(String)
+			request.getSession().getAttribute("user_error");
+		
+		if(user_error!=null){
+			out.println(user_error);
+			request.getSession().setAttribute("user_error", null);
+		}
+	%>
+</font></h3>
+
+<table id="produce_table" width="80%">
 	
 	<form method="post" action="confirm_list">
 	<input type="submit" value="BUY SELECTED">
@@ -67,7 +99,7 @@ if(request.getSession(false).getAttribute("user")==null){
 	</form>
 </table>
 
-<table>
+<table id="sales_table" width="80%">
 	<tr>
 		<th>Produce Name</th>
 		<th>Quantity Purchased</th>
@@ -98,5 +130,6 @@ if(request.getSession(false).getAttribute("user")==null){
 	%>
 </table>
 
+</center>
 </body>
 </html>

@@ -63,8 +63,8 @@ public class Produce {
 			
 			//update table
 			DBAccess.getQuery().update("update produce "
-					+ "set quantity=? where produce_id=?", new Object[] {
-							quantity,currentTypeID[0]
+					+ "set quantity=? ,price=? where produce_id=?", new Object[] {
+							quantity,price,currentTypeID[0]
 					});
 		}else {
 			//add produce if not already exists

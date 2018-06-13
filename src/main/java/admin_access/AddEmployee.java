@@ -59,7 +59,9 @@ public class AddEmployee extends HttpServlet {
 			employee.addEmployeeToDB();
 			response.sendRedirect("page.jsp");
 		}else {
-			response.getWriter().append("FUCKING EMPLOYEE EXISTS");
+			String admin_error="Sorry Employee already exists";
+			request.getSession().setAttribute("admin_error", admin_error);
+			response.sendRedirect("page.jsp");
 		}
 		
 	}

@@ -39,18 +39,26 @@ public class AddProduce extends HttpServlet {
 		String date=today.get(Calendar.DAY_OF_MONTH)+"/"
 				+(today.get(Calendar.MONTH)+1)+"/"+
 				today.get(Calendar.YEAR);
+		double price=-1;
+		int category_id=-1;
+		int quantity=-1;
 		
-		String product_name=request.getParameter("produce_name");
-		int category_id=Integer.parseInt(request.getParameter("category_id"));
-		int quantity=Integer.parseInt(request.getParameter("quantity"));
-		double price=Double.parseDouble(request.getParameter("price"));
-		
-		Produce produce=Produce.createProduce(
-				product_name,category_id,quantity,price, date);
-		
-		produce.addToDB();
-		
-		response.sendRedirect("page.jsp");
+			String product_name=request.getParameter("produce_name");
+			category_id=Integer.parseInt(request.getParameter("category_id"));
+			quantity=Integer.parseInt(request.getParameter("quantity"));
+			price=Double.parseDouble(request.getParameter("price"));
+			if(product_name==null || price==-1 || category_id==-1 || quantity==-1) {
+				String admin_error="Please make sure you filled in all the fields properly";
+				request.getSession().setAttribute("admin_error", admin_error);
+				response.sendRedirect("page.jsp");
+			}else {
+				Produce produce=Produce.createProduce(
+						product_name,category_id,quantity,price, date);
+				
+				produce.addToDB();
+				
+				response.sendRedirect("page.jsp");
+			}
 	}
 
 	/**

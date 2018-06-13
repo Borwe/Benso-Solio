@@ -19,7 +19,7 @@
 
 <title>ADMINISTRATOR PAGE</title>
 </head>
-<body>
+<body><center>
 <script>
 	$(document).ready(function() {
 		$("#add_produce").hide();
@@ -62,6 +62,7 @@
         <th><a href="#" id="add_employee_btn">ADD EMPLOYEE</a></th>
         <th><a href="#" id="show_products_btn">PRODUCT TO EMPLOYEES</a></th>
         <th><a href="#" id="show_sales_btn">SALES</a></th>
+        <th><a href="admin_logout">LOG OUT</a></th>
     </tr>
 </table>
 
@@ -78,7 +79,7 @@ if(admin_error!=null){
 </h3>
 
 
-<table id="add_produce">
+<table id="add_produce" width="80%">
 	<form method="post" action="add_produce">
     <tr>
         <th>SELECT CATEGORY</th>
@@ -112,7 +113,7 @@ if(admin_error!=null){
     </form>
 </table>
 
-<table id="add_employee">
+<table id="add_employee" width="80%">
 	<form method="post" action="add_employee">
 	<tr>
 		<th>First Name:</th>
@@ -156,7 +157,7 @@ if(admin_error!=null){
 	</form>
 </table>
 
-<table id="show_products">
+<table id="show_products" width="80%">
 	<tr>
 		<th>Produce ID</th>
 		<th>Produce Name</th>
@@ -186,7 +187,7 @@ if(admin_error!=null){
 	%>
 </table>
 
-<table id="show_sales">
+<table id="show_sales" width="80%">
 	<tr>
 		<th>ID</th>
 		<th>Produce Name</th>
@@ -221,6 +222,6 @@ if(admin_error!=null){
 		}
 	%>
 </table>
-
+</center>
 </body>
 </html>

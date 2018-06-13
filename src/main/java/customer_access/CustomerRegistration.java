@@ -43,15 +43,34 @@ public class CustomerRegistration extends HttpServlet {
 		String phone_no=request.getParameter("phone_no");
 		String password=request.getParameter("password");
 		
+		if(first_name==null || last_name==null || user_name==null
+				|| phone_no==null || password==null) {
+			String user_error="Please fill in proper details before registration";
+			request.getSession().setAttribute("user_error", user_error);
+			request.getRequestDispatcher("index.jsp").forward(request, response);
+		}
+		
+		if(first_name.length()==0 || last_name.length()==0 || user_name.length()==0
+				|| phone_no.length()<10 || password.length()==0) {
+			String user_error="Please fill in proper details before registration";
+			request.getSession().setAttribute("user_error", user_error);
+			request.getRequestDispatcher("index.jsp").forward(request, response);
+		}
+		
 		Customer.Builder customerBuilder=new Builder();
 		customerBuilder.setAll(first_name, last_name,
 				user_name, phone_no, password);
 		
 		Customer customer=customerBuilder.build();
-		customer.addToDB();
+		try{
+			customer.addToDB();
+		}catch(Exception ex) {
+			request.getSession().setAttribute("user_error", "Sorry, User Name already in use");
+			request.getRequestDispatcher("index.jsp").forward(request, response);
+		}
 		
-		response.getWriter().append("Served at: ")
-			.append(request.getContextPath());
+		request.getSession().setAttribute("user_error", "Okay, now login with created account");
+		response.sendRedirect("index.jsp");
 	}
 
 	/**

@@ -53,6 +53,14 @@ public class CustomerPaid extends HttpServlet {
 		
 		String mpesa_code=request.getParameter("mpesa_code");
 		
+		if(mpesa_code==null || mpesa_code.length()<5) {
+			request.getSession().setAttribute("values", null);
+			String user_error="Please retry input a valid MPESA transaction code";
+			request.getSession().setAttribute("user_error", user_error);
+			response.sendRedirect("page.jsp");
+			return;
+		}
+		
 		//get all products
 		Set<String> keys=values.keySet();
 		for(String key:keys) {
@@ -60,6 +68,10 @@ public class CustomerPaid extends HttpServlet {
 			int quantity=Integer.parseInt(values.get(key));
 			customer.payGoodFor(produce, quantity, mpesa_code);
 		}
+		
+		String user_error="Purchase occured, now go to our centers to take your produce, show Mpesa code";
+		request.getSession().setAttribute("user_error", user_error);
+		response.sendRedirect("page.jsp");
 	}
 
 	/**

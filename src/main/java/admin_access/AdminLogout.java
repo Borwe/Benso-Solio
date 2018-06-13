@@ -7,17 +7,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
- * Servlet implementation class AdminLogin
+ * Servlet implementation class AdminLogout
  */
-@WebServlet("/admin/admin_login")
-public class AdminLogin extends HttpServlet {
+@WebServlet("/admin/admin_logout")
+public class AdminLogout extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
+	private Logger logger=LoggerFactory.getLogger(AdminLogout.class);
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AdminLogin() {
+    public AdminLogout() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -27,23 +32,7 @@ public class AdminLogin extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String user_name=request.getParameter("user_name").trim().toLowerCase();
-		String password=request.getParameter("password").trim().toLowerCase();
-		
-		if(user_name==null || password==null) {
-			String admin_error="Please fill in proper information";
-			request.getSession().setAttribute("admin_error", admin_error);
-			response.sendRedirect("index.jsp");
-			return;
-		}
-		if(user_name.equals(password) && user_name.equals("admin")) {
-			response.sendRedirect("page.jsp");
-		}else {
-			String admin_error="Please fill in proper information";
-			request.getSession().setAttribute("admin_error", admin_error);
-			response.sendRedirect("index.jsp");
-			return;
-		}
+		response.sendRedirect("index.jsp");
 	}
 
 	/**

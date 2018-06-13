@@ -4,14 +4,30 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<link rel="stylesheet" href="../css/bootstrap.min.css">
+<script src="../js/jquery-3.3.1.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+
 <title>ADMIN LOGIN</title>
 </head>
 <body>
-
+<center>
 <table>
 	<form method="post" action="admin_login">
 	<tr>
-		<th colspan="2">LOGIN</th>
+		<th colspan="2" align="center">LOGIN</th>
+	</tr>
+	
+	<tr>
+		<th colspan="2"><font  color="red"><%
+			String admin_error=(String)
+				request.getSession().getAttribute("admin_error");
+			if(admin_error!=null){
+				out.println(admin_error);
+				request.getSession().setAttribute("admin_error", null);
+			}
+		%></font></th>
 	</tr>
 	<tr>
 		<td>User Name:</td>
@@ -26,6 +42,6 @@
 	</tr>
 	</form>
 </table>
-
+</center>
 </body>
 </html>
